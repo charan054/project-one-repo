@@ -37,11 +37,11 @@ class User
 	}
 	long getMobile()
 	{
-		return mobile_no
+		return mobile_no;
 	}
 	String getMail()
 	{
-		return e_mail
+		return e_mail;
 	}
 	public String toString()
 	{
