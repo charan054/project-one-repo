@@ -88,7 +88,7 @@ class Authentication
 		}
 		else if(n==2)
 		{
-			signup();
+			signUp();
 		}
 	}
 }
