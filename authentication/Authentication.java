@@ -10,7 +10,7 @@ class Authentication
         	while(true)
         	{
         	    boolean b=false;
-        	    System.out.print("1 - Username\n2 - E-mail\n3 - Mobile number ");
+        	    System.out.println("1 - Username\n2 - E-mail\n3 - Mobile number ");
         	    int n=sc.nextInt();
         	    if(n==1)
         	    {
@@ -78,7 +78,7 @@ class Authentication
     }
     static void passwordValidation()
     {
-            System.out.print("Enter password");
+            System.out.print("Enter password : ");
             String password=sc.next();
             if(password.equals(u.getPass()))
             {
@@ -329,5 +329,17 @@ class Authentication
 		{
 			login();
 		}
+		else
+		{
+			System.out.println("Invalid choice");
+		}
+		System.out.println("Press 1 to login/signUp or any key to exit : ");
+		char ch=sc.next().charAt(0);
+		if(ch=='1')
+		{
+			main(args);
+		}
+		else
+			System.out.println("Thank you :)");
 	}
 }
