@@ -1,21 +1,26 @@
 import java.util.*;
+import java.io.*;
 class Authentication
 {
 	static ArrayList<User> al=new ArrayList<>();
+	static FileOutputStream fos;
+	static ObjectOutputStream oos;
+	static FileInputStream fis;
+	static ObjectInputStream ois;
 	static User u;
 	static Scanner sc=new Scanner(System.in);
-	static void login()
+	static void login()throws Exception
     	{
         	System.out.println("Enter credentials to Login ");
         	while(true)
         	{
         	    boolean b=false;
         	    System.out.println("1 - Username\n2 - E-mail\n3 - Mobile number ");
-        	    int n=sc.nextInt();
+        	    int n=Integer.parseInt(sc.nextLine());
         	    if(n==1)
         	    {
         	        System.out.print("Enter Username : ");
-        	        String username=sc.next();
+        	        String username=sc.nextLine();
         	        for(User x:al)
         	        {
         	            if(x.getName().equals(username))
@@ -29,7 +34,7 @@ class Authentication
         	    else if(n==2)
         	    {
         	        System.out.print("Enter E-mail : ");
-        	        String e_mail=sc.next();
+        	        String e_mail=sc.nextLine();
         	        for(User x:al)
         	        {
         	            if(x.getMail().equals(e_mail))
@@ -43,7 +48,7 @@ class Authentication
             	else if(n==3)
             	{
             	    System.out.print("Enter Mobile number : ");
-            	    long mobile_no=sc.nextLong();
+            	    long mobile_no=Long.parseLong(sc.nextLine());
             	    for(User x:al)
             	    {
             	        if(x.getMobile()==mobile_no)
@@ -66,20 +71,19 @@ class Authentication
             	else
             	{
             	    System.out.print("User not found press 1 to re-enter or any key to exit : ");
-            	    char ch1=sc.next().charAt(0);
+            	    char ch1=sc.nextLine().charAt(0);
             	    if(ch1!='1')
             	    {
-            	       System.out.println("Thank you :) ");
+            	       exit();
             	       break;
             	    }
             	}
 		}
-        
     }
-    static void passwordValidation()
+    static void passwordValidation()throws Exception
     {
             System.out.print("Enter password : ");
-            String password=sc.next();
+            String password=sc.nextLine();
             if(password.equals(u.getPass()))
             {
                 System.out.println("Login successfull");
@@ -87,7 +91,7 @@ class Authentication
             else
             {
                 System.out.print("Invalid Password \npress 1 to reset 2 to re-enter : ");
-                int n=sc.nextInt();
+                int n=Integer.parseInt(sc.nextLine());
                 if(n==1)
                 {
                     forgotPassword();
@@ -97,7 +101,7 @@ class Authentication
                     passwordValidation();
                 }
                 else
-                    System.out.println("Thank you :) ");
+                   exit();
             }
     	}
 	static boolean otpGeneration()
@@ -116,14 +120,14 @@ class Authentication
             while(true)
             {
                 System.out.print("Enter OTP : ");
-                if(otp==sc.nextInt())
+                if(otp==Integer.parseInt(sc.nextLine()))
                 {
                     return true;
                 }
                 else
                 {
                     System.out.println("Invalid otp \n1 - Re-enter\n2 - Resend ");
-                    int n=sc.nextInt();
+                    int n=Integer.parseInt(sc.nextLine());
                     if(n==2)
                     {
                         otpGeneration();
@@ -134,11 +138,11 @@ class Authentication
             }
             return false;
     }
-    static void forgotPassword()
+    static void forgotPassword()throws Exception
     {
         boolean b=false,b1=false;
         System.out.print("Enter Mobile Number : ");
-        long mobile_no=sc.nextLong();
+        long mobile_no=Long.parseLong(sc.nextLine());
         for(User x:al)
         {
             if(x.getMobile()==mobile_no)
@@ -155,11 +159,11 @@ class Authentication
         else
         {
             System.out.print("User not found press 1 to re-enter or any key to exit : ");
-            char ch=sc.next().charAt(0);
+            char ch=sc.nextLine().charAt(0);
             if(ch=='1')
                 forgotPassword();
             else
-                System.out.println("Thank you :)");
+                exit();
         }
         if(b1)
         {
@@ -170,7 +174,7 @@ class Authentication
         	while(true)
         	{
             		System.out.print("Enter Password : ");
-            		password=sc.next();
+            		password=sc.nextLine();
             		if(password.length()>=8){
                 	for(int i=0;i<password.length();i++)
                 	{
@@ -209,23 +213,23 @@ class Authentication
 		u.setPass(password);
             System.out.println("Your Password : "+u.getPass());
             System.out.print("Press 1 to Login or any key to exit : ");
-            char ch=sc.next().charAt(0);
+            char ch=sc.nextLine().charAt(0);
             if(ch=='1')
                 login();
             else
-            System.out.println("Thank you :) ");
+            	exit();
         }
         else
-            System.out.println("Thank you :) ");
+            exit();
     }
- 	static void signUp()
+ 	static void signUp()throws Exception
 	{
 		System.out.println("Enter details to create new account ");
 		String username;
         	while(true)
 		{
             		System.out.print("Enter Username : ");
-            		username=sc.next();
+            		username=sc.nextLine();
             		boolean b=true;
             		for(User x:al)
             		{
@@ -245,7 +249,7 @@ class Authentication
         	while(true)
         	{
             		System.out.print("Enter Password : ");
-            		password=sc.next();
+            		password=sc.nextLine();
             		if(password.length()>=8){
                 	for(int i=0;i<password.length();i++)
                 	{
@@ -285,7 +289,7 @@ class Authentication
         	while(true)
         	{
             		System.out.print("Enter Mobile Number : ");
-            		mobile_no=sc.nextLong();
+            		mobile_no=Long.parseLong(sc.nextLine());
             		if((""+mobile_no).length()==10)
             		{
                 		if((""+mobile_no).charAt(0)<'6')
@@ -294,13 +298,13 @@ class Authentication
                     			break;
             		}
             		else
-                		System.out.println("Mbile number should contain 10 digits");
+                		System.out.println("Mobile number should contain 10 digits");
         	}
 		String e_mail;
         	while(true)
         	{
             		System.out.print("Enter Email : ");
-            		e_mail=sc.next();
+            		e_mail=sc.nextLine();
             		if(!e_mail.endsWith("@gmail.com"))
             		{
                 		System.out.println("Invalid email try again ");
@@ -308,19 +312,37 @@ class Authentication
             		else 
                 		break;
         	}
-        	al.add(new User(username,password,mobile_no,e_mail));
+		al.add(new User(username,password,mobile_no,e_mail));
         	System.out.println("Account created successfully");
         	System.out.print("Press 1 to Login or any key to exit : ");
-        	char ch=sc.next().charAt(0);
+        	char ch=sc.nextLine().charAt(0);
         	if(ch=='1')
             		login();
         	else
-            	System.out.println("Thank you :) ");		
+            		exit();		
 	}
-	public static void main(String[]args)
+	public static void main(String[]args)throws Exception
 	{
+		
+		fis=new FileInputStream("D:\\charan\\Git new project\\project-one-repo\\authentication\\data.txt");
+		ois=new ObjectInputStream(fis);
+		try{
+			while(true)
+			{
+				al.add((User)ois.readObject());
+				
+			}
+		}
+		catch(EOFException e)
+		{
+		}
+		
+		/*for(User x:al)
+		{
+			System.out.println(x);
+		}*/
 		System.out.println("1 - Sign Up\n2 - Login");
-		int n=sc.nextInt();
+		int n=Integer.parseInt(sc.nextLine());
 		if(n==1)
 		{
 			signUp();
@@ -329,17 +351,33 @@ class Authentication
 		{
 			login();
 		}
-		else
-		{
-			System.out.println("Invalid choice");
+		else{
+			System.out.println("Press 1 to login/signUp or any key to exit : ");
+			char ch=sc.nextLine().charAt(0);
+			if(ch=='1')
+			{
+				main(args);
+			}
+			else{
+				exit();
+			}
 		}
-		System.out.println("Press 1 to login/signUp or any key to exit : ");
-		char ch=sc.next().charAt(0);
-		if(ch=='1')
-		{
-			main(args);
-		}
-		else
-			System.out.println("Thank you :)");
+		
+		oos.close();
+		fos.close();
+		ois.close();
+		fis.close();
+
+	}
+	static void exit ()throws IOException
+	{
+		System.out.println("Thank you :)");
+		fos=new FileOutputStream("D:\\charan\\Git new project\\project-one-repo\\authentication\\data.txt");
+		oos=new ObjectOutputStream(fos);
+			for(User x: al)
+			{
+			oos.writeObject(x);
+				oos.flush();
+			}
 	}
 }
