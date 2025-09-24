@@ -42,7 +42,6 @@ class Authentication
         	            {
         	                b=!b;
         	                u=x;
-				System.out.println(u);
                 	        break;
                 	    }
                 	}
@@ -169,7 +168,7 @@ class Authentication
         }
         if(b1)
         {
-            System.out.print("Enter new Password : ");
+            System.out.print("Enter new Password ");
             String password;
         	System.out.println("Password should contains atleast 8 characters,Should start with capital letter one special character and a number ");
 		int s=0,n=0;
@@ -250,26 +249,30 @@ class Authentication
         	}
 		String password;
         	System.out.println("Password should contains atleast 8 characters,Should start with capital letter one special character and a number ");
-		int s=0,n=0;
+		int s=0,n=0,c=0,a=0;
         	while(true)
         	{
             		System.out.print("Enter Password : ");
             		password=sc.nextLine();
-            		if(password.length()>=8){
+            		if(password.length()>=8)
+			{
                 	for(int i=0;i<password.length();i++)
                 	{
                     		if(i==0)
                     		{
-                        		if(password.charAt(0)<'A' || password.charAt(0)>'Z')
-                        		break;
-                            
+                        		if(password.charAt(0)>='A' && password.charAt(0)<='Z'){
+						c++;
+
+					}
+					                            
                     		}
                     		else
                     		{
                         		char ch=password.charAt(i);
-                        		if(ch>='A'&& ch<='Z' ||(ch>='a'&& ch<='z'))
+					//System.out.println(ch);
+                        		if((ch>='A'&& ch<='Z') ||(ch>='a'&& ch<='z'))
                         		{
-                            
+                            			a++;
                         		}
                         		else if(ch>='0'&& ch<='9')
                          			n++;
@@ -277,24 +280,49 @@ class Authentication
                             			s++;
                     		}
                 	}
-                	if(n==0 || s==0)
+			//System.out.println(c+" "+n+" "+a+" "+s);
+                	if(n==0)
                 	{
-                	    System.out.println("Password dosent match criteria try again ");
+                	    System.out.println("Password Should contain a Digit ");
                 	}
+			else if(s==0)
+			{
+                	    System.out.println("Password Should contain a Special Character ");
+			}
+			else if(c==0)
+			{
+                	    System.out.println("Password Should start with Capital ");
+
+			}
+			else if(a==0)
+			{
+                	    System.out.println("Password Should contain a alphabet ");
+			}
                 	else
                 	    break;
             	}
             	else
             	{
-            	    System.out.println("Password dosent match criteria try again ");
+            	    System.out.println("Password should have atleast 8 characters ");
             	}
             
         	}
 		long mobile_no;
+		boolean bm=true;
         	while(true)
         	{
             		System.out.print("Enter Mobile Number : ");
             		mobile_no=Long.parseLong(sc.nextLine());
+			for(User x: al)
+			{
+				if(x.getMobile()==mobile_no)
+				{
+					bm=!bm;
+					break;
+				}	
+			}
+		if(bm)
+		{
             		if((""+mobile_no).length()==10)
             		{
                 		if((""+mobile_no).charAt(0)<'6')
@@ -304,34 +332,58 @@ class Authentication
             		}
             		else
                 		System.out.println("Mobile number should contain 10 digits");
+		}
+		else{
+			System.out.println("Mobile number already linked to another Account provide new Number ");
+			bm=!bm;
+			}
         	}
 		String e_mail;
         	while(true)
         	{
             		System.out.print("Enter Email : ");
             		e_mail=sc.nextLine();
+			for(User x: al)
+			{
+				if(x.getMail().equals(e_mail))
+				{
+					bm=!bm;
+					break;
+				}	
+			}
+		if(bm)
+		{
             		if(!e_mail.endsWith("@gmail.com"))
             		{
                 		System.out.println("Invalid email try again ");
             		}
             		else 
                 		break;
+		}
+		else{
+			System.out.println("Mobile number already linked to another Account provide new Number ");
+			bm=!bm;
+			}
         	}
 		al.add(new User(username,password,mobile_no,e_mail));
         	System.out.println("Account created successfully");
+		exit();	
         	System.out.print("Press 1 to Login or any key to exit : ");
         	char ch=sc.nextLine().charAt(0);
         	if(ch=='1')
             		login();
         	else
-            		exit();		
+			System.out.println("Thank you :)");
+            			
 	}
 	public static void main(String[]args)throws Exception
 	{
+		File f=new File(path);
 		
-		fis=new FileInputStream(path);
-		ois=new ObjectInputStream(fis);
+		if(f.length()!=0){
 		try{
+			fis=new FileInputStream(path);
+		ois=new ObjectInputStream(fis);
 			while(true)
 			{
 				al.add((User)ois.readObject());
@@ -341,7 +393,7 @@ class Authentication
 		catch(EOFException e)
 		{
 		}
-		
+		}
 		/*for(User x:al)
 		{
 			System.out.println(x);
@@ -377,7 +429,7 @@ class Authentication
 		
 		fos=new FileOutputStream(path);
 		oos=new ObjectOutputStream(fos);
-			System.out.println(al);
+			//System.out.println(al);
 			for(User x: al)
 			{
 			oos.writeObject(x);
