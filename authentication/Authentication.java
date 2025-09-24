@@ -9,6 +9,7 @@ class Authentication
 	static ObjectInputStream ois;
 	static User u;
 	static Scanner sc=new Scanner(System.in);
+	static String path = "data.txt";
 	static void login()throws Exception
     	{
         	System.out.println("Enter credentials to Login ");
@@ -41,6 +42,7 @@ class Authentication
         	            {
         	                b=!b;
         	                u=x;
+				System.out.println(u);
                 	        break;
                 	    }
                 	}
@@ -211,11 +213,14 @@ class Authentication
             
         	}
 		u.setPass(password);
+		exit();
             System.out.println("Your Password : "+u.getPass());
             System.out.print("Press 1 to Login or any key to exit : ");
             char ch=sc.nextLine().charAt(0);
-            if(ch=='1')
+            if(ch=='1'){
                 login();
+			return;
+		}
             else
             	exit();
         }
@@ -324,7 +329,7 @@ class Authentication
 	public static void main(String[]args)throws Exception
 	{
 		
-		fis=new FileInputStream("D:\\charan\\Git new project\\project-one-repo\\authentication\\data.txt");
+		fis=new FileInputStream(path);
 		ois=new ObjectInputStream(fis);
 		try{
 			while(true)
@@ -363,21 +368,22 @@ class Authentication
 			}
 		}
 		
-		oos.close();
-		fos.close();
+		System.out.println("Thank you :)");
 		ois.close();
 		fis.close();
-
 	}
 	static void exit ()throws IOException
 	{
-		System.out.println("Thank you :)");
-		fos=new FileOutputStream("D:\\charan\\Git new project\\project-one-repo\\authentication\\data.txt");
+		
+		fos=new FileOutputStream(path);
 		oos=new ObjectOutputStream(fos);
+			System.out.println(al);
 			for(User x: al)
 			{
 			oos.writeObject(x);
 				oos.flush();
 			}
+			oos.close();
+		fos.close();
 	}
 }
